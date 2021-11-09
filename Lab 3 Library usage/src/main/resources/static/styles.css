@@ -1,0 +1,21 @@
+td, th {
+    padding: 0.5rem 0.5rem 0.5rem 0.25rem;
+    border-left: 1px solid #54565a;
+    border-right: 1px solid #54565a;
+    border-bottom: 1px solid #54565a;
+}
+table {
+    width: max-content;
+    text-align: left;
+    border-collapse: collapse;
+    border: 1px solid #54565a;
+}
+
+.custom-link {
+    font-size: 1.1rem;
+    padding: 0 0.25rem 0 0.25rem;
+}
+.add-button {
+    font-size: 1.3rem;
+    padding-top: 0.5rem;
+}

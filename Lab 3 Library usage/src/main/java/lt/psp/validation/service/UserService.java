@@ -1,7 +1,6 @@
 package lt.psp.validation.service;
 
 import com.raimondsobolevskij.service.FormValidator;
-import lombok.RequiredArgsConstructor;
 import lt.psp.validation.exceptions.InvalidEmailException;
 import lt.psp.validation.exceptions.InvalidPasswordException;
 import lt.psp.validation.exceptions.InvalidPhoneNumberException;
@@ -15,11 +14,15 @@ import java.util.List;
 
 
 @Service
-@RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-    private final FormValidator formValidator = new FormValidator();
+    private final FormValidator formValidatorLT = new FormValidator();
+    private final FormValidator formValidatorRU = new FormValidator();
 
+    public UserService(UserRepository userRepository) {
+        formValidatorRU.newValidationRule(12, '8',  "+7");
+        this.userRepository = userRepository;
+    }
 
     public int updateUser(User user) throws InvalidPhoneNumberException, InvalidPasswordException, InvalidEmailException {
         User user1 = userRepository.findByUserId(user.getUserId());
@@ -51,13 +54,14 @@ public class UserService {
     }
 
     private void checkFields(User user) throws InvalidEmailException, InvalidPhoneNumberException, InvalidPasswordException {
-        if (!formValidator.validateEmail(user.getEmail())) {
+        if (!formValidatorLT.validateEmail(user.getEmail())) {
             throw new InvalidEmailException("Invalid email address");
         }
-        if (!formValidator.validatePhoneNumber(user.getPhoneNr())) {
+        if (!formValidatorLT.validatePhoneNumber(user.getPhoneNr()) &&
+                !formValidatorRU.validatePhoneNumber(user.getPhoneNr())) {
             throw new InvalidPhoneNumberException("Invalid phone number");
         }
-        if (!formValidator.validatePassword(user.getPassword())) {
+        if (!formValidatorLT.validatePassword(user.getPassword())) {
             throw new InvalidPasswordException("Invalid password");
         }
     }
